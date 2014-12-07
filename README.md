@@ -2,7 +2,7 @@
 
 ## A Fully Homomorphic Encryption library
 
-**version 1.0** -- *Release date: 2014.12.03*
+**version 1.0** -- *Release date: 2014.12.06*
 
 **Authors:** Leo Ducas <leo@ducas.org> and Daniele Micciancio <daniele@cs.ucsd.edu>
 
