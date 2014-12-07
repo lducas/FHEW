@@ -1,0 +1,24 @@
+
+This library was develop quickly as a demonstration of feasibility
+ of the cryptosystem presented in the article
+
+FHE Bootstrapping in less than a second, 
+by Léo Ducas and Daniele Micciancio, 
+avaliable at https://eprint.iacr.org/2014/816.
+
+We recall (complete statement should be found in the file LICENSE) that:
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+
+Here is a non-exhaustive list of improvement that could be added
+- Support for other operation than NAND
+- Usage of NTT rather than complex FFT. 
+- Vectorialization of linear algebra operations.
+
+Here is a non exhaustive list of NECESSARY modification for any use
+ of this library beyond scientific curiosity
+- Replace calls to Rand() by cryptographic pseudo-randomness.
