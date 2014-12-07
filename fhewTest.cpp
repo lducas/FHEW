@@ -9,10 +9,10 @@ using namespace std;
 void help(char* cmd) {
   cerr << "\nusage: " << cmd << " n\n\n" 
   << "  Generate a secret key sk and evaluation key ek, and repeat the following test n times:\n"
-  << "   - generate two random bits b1,b2\n"
+  << "   - generate random bits b1,b2,b3,b4\n"
   << "   - compute ciphertexts c1, c2, c3 and c4 encrypting b1, b2, b3 and b4  under sk\n"
   << "   - homomorphically compute the encrypted (c1 NAND c2) NAND (c3 NAND c4) \n"
-  << "   - decrypt the all intermediate results and check correctness \n"
+  << "   - decrypt all the intermediate results and check correctness \n"
   << "\n If any of the tests fails, print ERROR and stop immediately.\n\n";
   exit(0);
 }

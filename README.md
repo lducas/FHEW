@@ -14,7 +14,7 @@ described in the paper ["FHE bootstrapping in less than a second"](http://eprint
 and makes use of the [FFTW](http://www.fftw.org) library (the "Fastest
 Fourier Transform in the West"). Hence the name FHEW, which you may
 read as the "Fastest Homomorphic Encryption in the West", though the
-name more of a reference to FFTW than a claim about performance. The
+name is more of a reference to FFTW than a claim about performance. The
 library provides a symmetric encryption scheme to encrypt (and
 decrypt) single bit messages, supporting the homomorphic evaluation of
 arbitrary boolean circuits on encrypted data using a public (evaluation) key.
