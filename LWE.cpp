@@ -26,7 +26,7 @@ namespace LWE {
   
   void Encrypt(CipherText* ct, const SecretKey sk, int m) {
     ct->b = (m % 4) * q / 4;
-    ct->b += 0*Sample(Chi3);
+    ct->b += Sample(Chi3);
     for (int i = 0; i < n; ++i)	{
       ct->a[i] = rand() % q;
       ct->b = (ct->b + ct->a[i] * sk[i]) % q;
