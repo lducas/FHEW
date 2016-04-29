@@ -19,6 +19,8 @@ library provides a symmetric encryption scheme to encrypt (and
 decrypt) single bit messages, supporting the homomorphic evaluation of
 arbitrary boolean circuits on encrypted data using a public (evaluation) key.
 
+**Note** Please do not expect maintenance of this code.
+
 ### Requirements 
 
 FHEW requires the FFTW 3 library available at <http://www.fftw.org/download.html>, 
