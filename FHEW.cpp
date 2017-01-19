@@ -180,6 +180,7 @@ namespace FHEW {
     LWE::CipherTextQ eQ;
     LWE::KeySwitch(&eQ, EK.KSkey, *eQN);
     LWE::ModSwitch(res, eQ);
+    delete eQN;
   }
   
 }
