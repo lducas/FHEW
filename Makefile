@@ -15,7 +15,7 @@ install: $(INCLUDE) libfhew.a
 
 uninstall:
 	rm $(PREFIX)/lib/libfhew.a
-	rm $(PREFIX)/lib/{distrib,LWE,FHEW,FFT,params}.h
+	rm $(PREFIX)/include/{distrib,LWE,FHEW,FFT,params}.h
 
 clean:
 	rm *.o libfhew.a fhewTest cmd/gen cmd/enc cmd/dec cmd/nand || echo nothing to clean
