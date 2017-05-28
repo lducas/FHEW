@@ -45,7 +45,7 @@ namespace FHEW {
     }
     for (int i = 0; i < K2; ++i)
       for (int j = 0; j < 2; ++j)
-  FFTforward(ct[i][j], res[i][j]);
+        FFTforward(ct[i][j], res[i][j]);
   }
   
   void KeyGen(EvalKey* EK, const LWE::SecretKey LWEsk) {
@@ -73,7 +73,7 @@ namespace FHEW {
     for (int i = 0; i < N; ++i)
       for (int j = 0; j < KS_base; ++j)
         for (int k = 0; k < KS_exp; ++k)
-    assert(fwrite(EK.KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
+          assert(fwrite(EK.KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
   }
 
   EvalKey* fread_ek(FILE* f) {
@@ -90,8 +90,8 @@ namespace FHEW {
     for (int i = 0; i < N; ++i)
       for (int j = 0; j < KS_base; ++j)
         for (int k = 0; k < KS_exp; ++k) {
-    EK->KSkey[i][j][k] = new LWE::CipherTextQ;
-    assert(fread(EK->KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
+          EK->KSkey[i][j][k] = new LWE::CipherTextQ;
+          assert(fread(EK->KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
   }
     return EK;
   }
@@ -107,25 +107,25 @@ namespace FHEW {
       FFTbackward(ct[j], ACC[j]);
     for (int j = 0; j < 2; ++j)
       for (int k = 0; k < N; ++k) {
-  ZmodQ t = ct[j][k] * v_inverse;
-  for (int l = 0; l < K; ++l) {
-    ZmodQ r = (t << g_bits_32[l]) >> g_bits_32[l];
-    //      if ((l==2) && (k ==0 ))
-    //       cout << r << ",";
-    t = (t-r) >> g_bits[l];
-    dct[j+2*l][k] = r;
-  }
+        ZmodQ t = ct[j][k] * v_inverse;
+        for (int l = 0; l < K; ++l) {
+          ZmodQ r = (t << g_bits_32[l]) >> g_bits_32[l];
+          //      if ((l==2) && (k ==0 ))
+          //       cout << r << ",";
+          t = (t-r) >> g_bits[l];
+          dct[j+2*l][k] = r;
+        }
       }
     for (int j = 0; j < K2; ++j)
       FFTforward(dctFFT[j], dct[j]);
     // Mult_dct_ct(ACC, dct, C);
     for (int j = 0; j < 2; ++j)
       for (int k = 0; k < N2; ++k) {
-  ACC[j][k] = (double complex) 0.0;
-  for (int l = 0; l < K2; ++l)
-    ACC[j][k] += ((double complex) dctFFT[l][k]) * ((double complex) C[l][j][k]);
+        ACC[j][k] = (double complex) 0.0;
+        for (int l = 0; l < K2; ++l)
+          ACC[j][k] += ((double complex) dctFFT[l][k]) * ((double complex) C[l][j][k]);
       }
-      }
+  }
   
   void InitializeACC(ct_FFT1 ACC, int m) {  // Set a ciphertext to X^m * G (encryption of m without errors)
     ct_ModQ1 res;
@@ -181,9 +181,9 @@ namespace FHEW {
     InitializeACC(ACC, (e12.b + q/4) % q);
     for (int i = 0; i < n; ++i) {
       int a = (q - e12.a[i] % q) % q;
-      for (int k = 0; k < BS_exp; ++k,  a /= BS_base) {
+      for (int k = 0; k < BS_exp; ++k, a /= BS_base) {
         int a0 = a % BS_base;
-        if (a0) AddToACC(ACC, *(EK.BSkey[i][a0][k]) );  
+        if (a0) AddToACC(ACC, *(EK.BSkey[i][a0][k]));
       }
     }
     LWE::CipherTextQN *eQN = MemberTest(t_TestMSB, ACC);
