@@ -45,4 +45,8 @@ const int BS_table[2] = {1,23};
 typedef ZmodQ Ring_ModQ[N];
 typedef fftw_complex Ring_FFT[N2];
 
+enum BinGate {OR, AND , NOR, NAND};
+const int GateConst[4] = {15*q/8, 9*q/8, 11*q/8, 13*q/8};
+
+
 #endif
