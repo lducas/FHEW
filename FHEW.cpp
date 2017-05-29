@@ -45,7 +45,7 @@ namespace FHEW {
     }
     for (int i = 0; i < K2; ++i)
       for (int j = 0; j < 2; ++j)
-	FFTforward(ct[i][j], res[i][j]);
+        FFTforward(ct[i][j], res[i][j]);
   }
   
   void KeyGen(EvalKey* EK, const LWE::SecretKey LWEsk) {
@@ -73,7 +73,7 @@ namespace FHEW {
     for (int i = 0; i < N; ++i)
       for (int j = 0; j < KS_base; ++j)
         for (int k = 0; k < KS_exp; ++k)
-	  assert(fwrite(EK.KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
+          assert(fwrite(EK.KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
   }
 
   EvalKey* fread_ek(FILE* f) {
@@ -90,9 +90,9 @@ namespace FHEW {
     for (int i = 0; i < N; ++i)
       for (int j = 0; j < KS_base; ++j)
         for (int k = 0; k < KS_exp; ++k) {
-	  EK->KSkey[i][j][k] = new LWE::CipherTextQ;
-	  assert(fread(EK->KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
-	}
+          EK->KSkey[i][j][k] = new LWE::CipherTextQ;
+          assert(fread(EK->KSkey[i][j][k], sizeof(LWE::CipherTextQ), 1, f));
+  }
     return EK;
   }
 
@@ -107,27 +107,27 @@ namespace FHEW {
       FFTbackward(ct[j], ACC[j]);
     for (int j = 0; j < 2; ++j)
       for (int k = 0; k < N; ++k) {
-	ZmodQ t = ct[j][k] * v_inverse;
-	for (int l = 0; l < K; ++l) {
-	  ZmodQ r = (t << g_bits_32[l]) >> g_bits_32[l];
-	  //      if ((l==2) && (k ==0 ))
-	  //       cout << r << ",";
-	  t = (t-r) >> g_bits[l];
-	  dct[j+2*l][k] = r;
-	}
+        ZmodQ t = ct[j][k] * v_inverse;
+        for (int l = 0; l < K; ++l) {
+          ZmodQ r = (t << g_bits_32[l]) >> g_bits_32[l];
+          //      if ((l==2) && (k ==0 ))
+          //       cout << r << ",";
+          t = (t-r) >> g_bits[l];
+          dct[j+2*l][k] = r;
+        }
       }
     for (int j = 0; j < K2; ++j)
       FFTforward(dctFFT[j], dct[j]);
     // Mult_dct_ct(ACC, dct, C);
     for (int j = 0; j < 2; ++j)
       for (int k = 0; k < N2; ++k) {
-	ACC[j][k] = (double complex) 0.0;
-	for (int l = 0; l < K2; ++l)
-	  ACC[j][k] += ((double complex) dctFFT[l][k]) * ((double complex) C[l][j][k]);
+        ACC[j][k] = (double complex) 0.0;
+        for (int l = 0; l < K2; ++l)
+          ACC[j][k] += ((double complex) dctFFT[l][k]) * ((double complex) C[l][j][k]);
       }
-      }
+  }
   
-  void InitializeACC(ct_FFT1 ACC, int m) {	// Set a ciphertext to X^m * G (encryption of m without errors)
+  void InitializeACC(ct_FFT1 ACC, int m) {  // Set a ciphertext to X^m * G (encryption of m without errors)
     ct_ModQ1 res;
     int mm = (((m % q) + q) % q) * (2*N/q);             // Reduce mod q (dealing with negative number as well)
     int sign = 1;
@@ -135,7 +135,7 @@ namespace FHEW {
     
     for (int j = 0; j < 2; ++j)
       for (int k = 0; k < N; ++k)
-	res[j][k]=0;
+        res[j][k]=0;
     res[1][mm] += sign*vgprime[0]; // [a,as+e] + X^m *G
     for (int j = 0; j < 2; ++j)
       FFTforward(ACC[j], res[j]);
@@ -153,23 +153,37 @@ namespace FHEW {
     for (int i = 0; i < N2; ++i)
       temp[i] = ((double complex) C[1][i]) * ((double complex) t[i]);
     FFTbackward(temp_ModQ, temp);
-    ct->b = v+temp_ModQ[0];	
+    ct->b = v+temp_ModQ[0]; 
     return ct;    
   }
+
+
   
-  void HomNAND(LWE::CipherText* res, const EvalKey& EK, const LWE::CipherText& ct1, const LWE::CipherText& ct2) {
+  void HomGate(LWE::CipherText* res, const BinGate gate, const EvalKey& EK, const LWE::CipherText& ct1, const LWE::CipherText& ct2) {
     LWE::CipherText e12;
+
+    for (int i = 0; i < n; ++i){
+      if (((ct1.a[i] - ct2.a[i]) %q) && ((ct1.a[i] + ct2.a[i]) %q))
+        // Ciphertexts are neither equal neither a NOT of each other
+        break;
+      if (i==n-1){
+        cerr << "ERROR: Please only use independant ciphertexts as inputs." << endl;
+        exit(1);
+      }
+    }
+
     for (int i = 0; i < n; ++i)
       e12.a[i] = (2*q - (ct1.a[i] + ct2.a[i])) % q;
-    e12.b  =  (13 * q / 8) - (ct1.b + ct2.b) % q;
+
+    e12.b  =  GateConst[gate] - (ct1.b + ct2.b) % q;
 
     ct_FFT1 ACC;
     InitializeACC(ACC, (e12.b + q/4) % q);
     for (int i = 0; i < n; ++i) {
       int a = (q - e12.a[i] % q) % q;
-      for (int k = 0; k < BS_exp; ++k, 	a /= BS_base) {
-	int a0 = a % BS_base;
-	if (a0) AddToACC(ACC, *(EK.BSkey[i][a0][k]) );	
+      for (int k = 0; k < BS_exp; ++k, a /= BS_base) {
+        int a0 = a % BS_base;
+        if (a0) AddToACC(ACC, *(EK.BSkey[i][a0][k]));
       }
     }
     LWE::CipherTextQN *eQN = MemberTest(t_TestMSB, ACC);
@@ -178,5 +192,15 @@ namespace FHEW {
     LWE::ModSwitch(res, eQ);
     delete eQN;
   }
-  
+
+  void HomNAND(LWE::CipherText* res, const EvalKey& EK, const LWE::CipherText& ct1, const LWE::CipherText& ct2) {
+    HomGate(res, NAND, EK, ct1, ct2);
+  }
+
+  void HomNOT(LWE::CipherText* res, const LWE::CipherText& ct) {
+    for (int i = 0; i < n; ++i)
+      res->a[i] = (q - ct.a[i]) % q;
+    res->b  =  (-ct.b + 5*q/4) % q;
+  }
+
 }
