@@ -3,8 +3,9 @@
 ## A Fully Homomorphic Encryption library
 
 **version 2.0-alpha** -- *Release date: 2017.05.30*
+
 **Updates**
-- Made Homomorphic gate computation 6x faster, by noticing that it is sufficient to compute ACC[1]. This trick is somehow equivalent to the external product from ["this paper"](http://eprint.iacr.org/2016/870)
+- Made Homomorphic gate computation 6x faster, by noticing that it is sufficient to compute ACC[1]. This trick is somehow equivalent to the external product from [this paper](http://eprint.iacr.org/2016/870)
 - Implemented support for more gates: AND, OR, NAND, NOR, NOT
 - Forbids operation on non-independant ciphertext: (x OP x) or (x OP (not x))
 - Bugfixes
