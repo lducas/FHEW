@@ -15,10 +15,11 @@ void help(char* cmd) {
 
 
 int main(int argc, char *argv[]) {
+  srand(time(NULL));
   if (argc != 4) help(argv[0]);
   int message = atoi(argv[1]);
   char* sk_fn = argv[2]; 
-  char* ct_fn = argv[3]; 
+  char* ct_fn = argv[3];
 
   if (!((message ==0)||(message ==1))){
       cerr << " The message must be 0 or 1.\n";

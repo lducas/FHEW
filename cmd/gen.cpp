@@ -20,6 +20,7 @@ void help(char* cmd) {
 
 
 int main(int argc, char *argv[]) {
+  srand(time(NULL));
   if (argc != 3) help(argv[0]);
   char* sk_fn = argv[1]; 
   char* ek_fn = argv[2]; 

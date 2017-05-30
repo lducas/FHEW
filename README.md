@@ -2,7 +2,13 @@
 
 ## A Fully Homomorphic Encryption library
 
-**version 1.0** -- *Release date: 2014.12.06*
+**version 2.0-alpha** -- *Release date: 2017.05.30*
+
+**Updates**
+- Made Homomorphic gate computation 6x faster, by noticing that it is sufficient to compute ACC[1]. This trick is somehow equivalent to the external product from [this paper](http://eprint.iacr.org/2016/870)
+- Implemented support for more gates: AND, OR, NAND, NOR, NOT
+- Forbids operation on non-independant ciphertext: (x OP x) or (x OP (not x))
+- Bugfixes
 
 **Authors:** Leo Ducas <leo@ducas.org> and Daniele Micciancio <daniele@cs.ucsd.edu>
 
@@ -57,7 +63,7 @@ usage message. The commands can be used as follows:
 gen sec.key ev.key
 enc 0 sec.key a.ct
 enc 1 sec.key b.ct
-nand ev.key a.ct b.ct c.ct
+gate nand ev.key a.ct b.ct c.ct
 dec sec.key c.ct 
 ```
 This generates a secret key and corresponding evaluation key, which
@@ -70,33 +76,49 @@ The output of the last command should be 1.
 
 ### Library Interface
 
-```
+```c++
 void FHEW::Setup();
 ```
 Should be run once (and only once) before any other function is used.
 
-```
+```c++
 void LWE::KeyGen(LWE::SecretKey sk);
 ```
 Generate an LWE secret key.
+(Note: please initialize your randomness with srand())
 
-```
+```c++
 void LWE::Encrypt(LWE::CipherText* ct, const LWE::SecretKey sk, int m);
 ```
 Encrypt a message.
+(Note: please initialize your randomness with srand())
 
-```
+```c++
 int LWE::Decrypt(const LWE::SecretKey sk, const LWE::CipherText& ct);
 ```
 Decrypt a ciphertext.
 
-```
+```c++
 void FHEW::KeyGen(FHEW::EvalKey* EK, const LWE::SecretKey sk);
 ```
-Generate an Evaluation Key from a secret key.
+Generate an Evaluation Key from a secret key. 
+(Note: please initialize your randomness with srand())
 
-```
+```c++
 void FHEW::HomNAND(LWE::CipherText* res, const FHEW::EvalKey& EK, 
 					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
 ```
-Perform a homomorphic NAND operation.
+Perform a homomorphic NAND operation. Deprecated due to the more general function below.
+
+```c++
+void HomGate(LWE::CipherText* res, const BinGate gate, const EvalKey& EK, 
+					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
+```
+Perform a homomorphic OP operation where OP={OR,AND,NOR,NAND}.
+
+```c++
+void HomNOT(LWE::CipherText* res, const LWE::CipherText& ct);
+```
+Perform a homomorphic NOT operation.
+(note: does not require any key material).
+
