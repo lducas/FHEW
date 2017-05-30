@@ -7,7 +7,7 @@ INCLUDE=distrib.h LWE.h FHEW.h FFT.h params.h
 
 all: libfhew.a cmd fhewTest
 
-cmd: cmd/gen cmd/enc cmd/nand cmd/dec
+cmd: cmd/gen cmd/enc cmd/nand cmd/dec cmd/gate
 
 install: $(INCLUDE) libfhew.a
 	install $(INCLUDE) $(PREFIX)/include
@@ -18,7 +18,7 @@ uninstall:
 	rm $(PREFIX)/include/{distrib,LWE,FHEW,FFT,params}.h
 
 clean:
-	rm *.o libfhew.a fhewTest cmd/gen cmd/enc cmd/dec cmd/nand || echo nothing to clean
+	rm *.o libfhew.a fhewTest cmd/gen cmd/enc cmd/dec cmd/nand cmd/gate || echo nothing to clean
 
 libfhew.a: distrib.o FFT.o LWE.o FHEW.o
 	$(AR) -q libfhew.a distrib.o FFT.o LWE.o FHEW.o
@@ -49,6 +49,9 @@ cmd/enc: cmd/enc.cpp common.o libfhew.a
 
 cmd/nand: cmd/nand.cpp common.o libfhew.a
 	$(CC) $(CFLAGS) -o cmd/nand cmd/nand.cpp common.o $(LDFLAGS)
+
+cmd/gate: cmd/gate.cpp common.o libfhew.a
+	$(CC) $(CFLAGS) -o cmd/gate cmd/gate.cpp common.o $(LDFLAGS)
 
 cmd/dec: cmd/dec.cpp common.o libfhew.a
 	$(CC) $(CFLAGS) -o cmd/dec cmd/dec.cpp common.o $(LDFLAGS)
