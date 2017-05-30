@@ -90,6 +90,7 @@ Generate an LWE secret key.
 void LWE::Encrypt(LWE::CipherText* ct, const LWE::SecretKey sk, int m);
 ```
 Encrypt a message.
+(Note: please initialize your randomness with srand())
 
 ```
 int LWE::Decrypt(const LWE::SecretKey sk, const LWE::CipherText& ct);
@@ -99,10 +100,24 @@ Decrypt a ciphertext.
 ```
 void FHEW::KeyGen(FHEW::EvalKey* EK, const LWE::SecretKey sk);
 ```
-Generate an Evaluation Key from a secret key.
+Generate an Evaluation Key from a secret key. 
+(Note: please initialize your randomness with srand())
 
 ```
 void FHEW::HomNAND(LWE::CipherText* res, const FHEW::EvalKey& EK, 
 					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
 ```
-Perform a homomorphic NAND operation.
+Perform a homomorphic NAND operation. Deprecated due to the more general function below.
+
+```
+void HomGate(LWE::CipherText* res, const BinGate gate, const EvalKey& EK, 
+					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
+```
+Perform a homomorphic OP operation where OP={OR,AND,NOR,NAND}.
+
+```
+void HomNOT(LWE::CipherText* res, const LWE::CipherText& ct);
+```
+Perform a homomorphic NOT operation.
+(note: does not require any key material).
+
