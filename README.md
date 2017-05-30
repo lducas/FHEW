@@ -2,7 +2,12 @@
 
 ## A Fully Homomorphic Encryption library
 
-**version 1.0** -- *Release date: 2014.12.06*
+**version 2.0-alpha** -- *Release date: 2017.05.30*
+**Updates**
+- Made Homomorphic gate computation 6x faster, by noticing that it is sufficient to compute ACC[1]. This trick is somehow equivalent to the external product from ["this paper"](http://eprint.iacr.org/2016/870)
+- Implemented support for more gates: AND, OR, NAND, NOR, NOT
+- Forbids operation on non-independant ciphertext: (x OP x) or (x OP (not x))
+- Bugfixes
 
 **Authors:** Leo Ducas <leo@ducas.org> and Daniele Micciancio <daniele@cs.ucsd.edu>
 
@@ -57,7 +62,7 @@ usage message. The commands can be used as follows:
 gen sec.key ev.key
 enc 0 sec.key a.ct
 enc 1 sec.key b.ct
-nand ev.key a.ct b.ct c.ct
+gate nand ev.key a.ct b.ct c.ct
 dec sec.key c.ct 
 ```
 This generates a secret key and corresponding evaluation key, which
