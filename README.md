@@ -85,6 +85,7 @@ Should be run once (and only once) before any other function is used.
 void LWE::KeyGen(LWE::SecretKey sk);
 ```
 Generate an LWE secret key.
+(Note: please initialize your randomness with srand())
 
 ```c++
 void LWE::Encrypt(LWE::CipherText* ct, const LWE::SecretKey sk, int m);
