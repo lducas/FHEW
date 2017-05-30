@@ -76,46 +76,46 @@ The output of the last command should be 1.
 
 ### Library Interface
 
-```
+```c++
 void FHEW::Setup();
 ```
 Should be run once (and only once) before any other function is used.
 
-```
+```c++
 void LWE::KeyGen(LWE::SecretKey sk);
 ```
 Generate an LWE secret key.
 
-```
+```c++
 void LWE::Encrypt(LWE::CipherText* ct, const LWE::SecretKey sk, int m);
 ```
 Encrypt a message.
 (Note: please initialize your randomness with srand())
 
-```
+```c++
 int LWE::Decrypt(const LWE::SecretKey sk, const LWE::CipherText& ct);
 ```
 Decrypt a ciphertext.
 
-```
+```c++
 void FHEW::KeyGen(FHEW::EvalKey* EK, const LWE::SecretKey sk);
 ```
 Generate an Evaluation Key from a secret key. 
 (Note: please initialize your randomness with srand())
 
-```
+```c++
 void FHEW::HomNAND(LWE::CipherText* res, const FHEW::EvalKey& EK, 
 					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
 ```
 Perform a homomorphic NAND operation. Deprecated due to the more general function below.
 
-```
+```c++
 void HomGate(LWE::CipherText* res, const BinGate gate, const EvalKey& EK, 
 					const LWE::CipherText& ct1, const LWE::CipherText& ct2);
 ```
 Perform a homomorphic OP operation where OP={OR,AND,NOR,NAND}.
 
-```
+```c++
 void HomNOT(LWE::CipherText* res, const LWE::CipherText& ct);
 ```
 Perform a homomorphic NOT operation.
